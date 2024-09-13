@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Respond to new issue
-        uses: peter-evans/create-comment@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          message: |
-            Thank you for opening this issue! This is created with action
+        run: |
+          echo "New issue opened!"
+          # Add your custom logic here
