@@ -1,14 +1,32 @@
-name: New Issue Action
+name: New Issue Action with API Call
 
 on:
   issues:
     types: [opened]
 
 jobs:
-  call_yougile_api:
+  respond_to_new_issue:
     runs-on: ubuntu-latest
     steps:
-      - name: Respond to new issue
-        run: |
-          echo "New issue opened!"
-          # Add your custom logic here
+      - name: Check out repository
+        uses: actions/checkout@v3
+      
+      - name: Make API Call
+        id: api_call
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://yougile.com/api-v2/tasks'
+          method: 'POST'
+          body: |
+            {
+              "title": "${{ github.event.issue.title }}",
+              "columnId": "ade9f385-229f-4605-bdb0-c3500ae8263e",
+              "description": "${{ github.event.issue.body }}",
+              "assigned": ["0900f260-b9e4-4343-a902-98c8aa1ce03e"]
+            }
+          headers: |
+            Content-Type: application/json
+            Authorization: Bearer ${{ secrets.YOUGILE_API_KEY }}
+
+      - name: Display API Response
+        run: echo "API Response Status: ${{ steps.api_call.outputs.response }}"
