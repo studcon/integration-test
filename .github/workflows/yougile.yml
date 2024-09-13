@@ -29,4 +29,4 @@ jobs:
             Authorization: Bearer ${{ secrets.YOUGILE_API_KEY }}
 
       - name: Display API Response
-        run: echo "API Response Status: ${{ steps.api_call.outputs.response }}"
+        run: echo "API Response Status (will be here)"
